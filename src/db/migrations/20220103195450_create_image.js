@@ -4,7 +4,7 @@ exports.up = function(knex) {
     table.increments("id");
     table.string("path").notNullable();
     table.timestamps(true, true);
-    table.integer("topic_id").references("id").inTable("topic");
+    table.integer("topic_id").notNullable().references("id").inTable("topic").onUpdate('CASCADE').onDelete('CASCADE');
   })
 };
 

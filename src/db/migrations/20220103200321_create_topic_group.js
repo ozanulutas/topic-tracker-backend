@@ -3,8 +3,8 @@ exports.up = function(knex) {
   return knex.schema.createTable("topic_group", table => {
     table.increments("id");
     table.timestamps(true, true);
-    table.integer("topic_id").references("id").inTable("topic");
-    table.integer("group_id").references("id").inTable("group");
+    table.integer("topic_id").notNullable().references("id").inTable("topic").onUpdate('CASCADE').onDelete('CASCADE');
+    table.integer("group_id").notNullable().references("id").inTable("group").onUpdate('CASCADE').onDelete('CASCADE');
   })
 };
 
