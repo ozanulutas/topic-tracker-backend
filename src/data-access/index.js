@@ -3,9 +3,9 @@
  * This layer is only for db access
  */
 
-const example = require("./example");
+const user = require("./user");
 
 
 module.exports = {
-  example,
+  user,
 }

@@ -4,9 +4,9 @@
  * Controllers don't really contain any logic other than handling the request and calling services. 
  */
 
-const example = require("./example.js");
+const user = require("./user.js");
 
 
 module.exports = {
-  example,
+  user,
 }

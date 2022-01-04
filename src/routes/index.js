@@ -1,6 +1,7 @@
 // Register routes here
-const example = require("./example.js");
+
+const user = require("./user.js");
 
 module.exports = app => {
-  app.use("/examples", example)
+  app.use("/users", user)
 }
