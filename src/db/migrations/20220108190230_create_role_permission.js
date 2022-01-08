@@ -1,15 +1,13 @@
 
 exports.up = function(knex) {
-  return knex.schema.createTable("user", table => {
+  return knex.schema.createTable("role_permission", table => {
     table.increments("id");
-    table.string("email").notNullable().unique();
-    table.string("name");
-    table.string("password").notNullable();
     table.timestamps(true, true);
     table.integer("role_id").notNullable().references("id").inTable("role").onUpdate('CASCADE').onDelete('CASCADE');
+    table.integer("permission_id").notNullable().references("id").inTable("permission").onUpdate('CASCADE').onDelete('CASCADE');
   })
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTable("user");
+  return knex.schema.dropTable("role_permission");
 };
