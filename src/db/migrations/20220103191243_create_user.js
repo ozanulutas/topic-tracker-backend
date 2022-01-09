@@ -6,7 +6,7 @@ exports.up = function(knex) {
     table.string("name");
     table.string("password").notNullable();
     table.timestamps(true, true);
-    table.integer("role_id").notNullable().references("id").inTable("role").onUpdate('CASCADE').onDelete('CASCADE');
+    table.integer("role_id").references("id").inTable("role").onUpdate('CASCADE').onDelete('CASCADE');
   })
 };
 
