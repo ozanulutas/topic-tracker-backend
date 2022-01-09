@@ -1,5 +1,5 @@
 // https://developer.mozilla.org/en-US/docs/web/javascript/reference/global_objects/error
-global.CustomError = class extends Error {
+class CustomError extends Error {
   constructor({ code }, ...params) {
     // Pass remaining arguments (including vendor specific ones) to parent constructor
     super(...params);
