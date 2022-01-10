@@ -9,12 +9,20 @@ class ApiError {
     return new ApiError(400, msg);
   }
 
-  static internalServerError(msg) {
-    return new ApiError(500, msg);
+  static unauthorized(msg) {
+    return new ApiError(401, msg);
+  }
+
+  static notFound(msg) {
+    return new ApiError(404, msg);
   }
 
   static conflict(msg) {
     return new ApiError(409, msg);
+  }
+  
+  static internalServerError(msg) {
+    return new ApiError(500, msg);
   }
 }
 
