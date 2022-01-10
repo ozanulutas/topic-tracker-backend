@@ -5,8 +5,10 @@
  */
 
 const user = require("./user.js");
+const role = require("./role.js");
 
 
 module.exports = {
   user,
+  role
 }
