@@ -7,15 +7,17 @@ const { user } = require("../data-access");
 // Registers a user if not exists
 const register = async (body) => {
 
-  const existingUser = await user.getByEmail(body.email);
+  let { name, password, email, role_id } = body;
+
+  const existingUser = await user.getByEmail(email);
 
   if (existingUser) {
     throw ApiError.conflict("User is already exists");
   }
 
-  body.password = await bcrypt.hash(body.password, 10);
+  password = await bcrypt.hash(password, 10);
 
-  const result = await user.register(body);
+  const result = await user.register({ name, password, email, role_id });
 
   return result;
 }
@@ -60,12 +62,13 @@ const login = async (body) => {
 }
 
 // Gets all users
-const getAll = async (page) => {
+const getAll = (page) => {
 
-  const result = await user.getAll(page);
+  const result = user.getAll(page);
 
   return result;
 }
+
 
 module.exports = {
   register,

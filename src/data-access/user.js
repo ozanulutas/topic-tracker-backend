@@ -4,9 +4,7 @@ const db = require("../db/db.js");
 // Registers a user
 const register = async (user) => {
 
-  const { name, password, email, role_id } = user;
-
-  const [result] = await db("user").insert({ name, password, email, role_id }).returning(["id"]);
+  const [result] = await db("user").insert(user).returning(["id"]);
 
   return result;
 }
@@ -28,7 +26,7 @@ const getByEmail = async (email) => {
   return result;
 }
 
-const getAll = async (page) => {
+const getAll = (page) => {
 
   let result = db("user")
     .leftJoin("role", "role.id", "user.role_id")
@@ -38,8 +36,7 @@ const getAll = async (page) => {
       "email",
       "role.name as role",
       "role.id as role_id"
-    )
-  // .paginate({ perPage: 3, currentPage: 1 });
+    );
 
   if (page) {
     result = result.paginate({ perPage: 3, currentPage: page, isLengthAware: true });
