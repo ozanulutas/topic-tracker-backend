@@ -4,7 +4,7 @@ const { user } = require("../services");
 // Registers a user
 const register = async (req, resp, next) => {
   try {
-    const result = await user.register(req.body);
+    const [result] = await user.register(req.body);
     resp.status(201).json({ data: result });
 
   } catch (err) {
@@ -28,9 +28,19 @@ const getAll = async (req, resp, next) => {
   try {
     const { page } = req.query
     const result = await user.getAll(page);
-    // resp.status(200).json(result);
-    resp.status(200).json(page ? result : { data: result });
 
+    resp.status(200).json(page ? result : { data: result });
+  } catch (err) {
+    next(err);
+  }
+}
+
+// Deletes a user
+const remove = async (req, resp, next) => {
+  try {
+    const [result] = await user.remove(req.params.id);
+
+    resp.status(200).json({ data: result });
   } catch (err) {
     next(err);
   }
@@ -40,5 +50,6 @@ const getAll = async (req, resp, next) => {
 module.exports = {
   register,
   login,
-  getAll
+  getAll,
+  remove
 }

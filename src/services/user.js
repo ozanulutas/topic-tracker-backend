@@ -9,7 +9,7 @@ const register = async (body) => {
 
   let { name, password, email, role_id } = body;
 
-  const existingUser = await user.getByEmail(email);
+  const [existingUser] = await user.getByEmail(email);
 
   if (existingUser) {
     throw ApiError.conflict("User is already exists");
@@ -17,7 +17,7 @@ const register = async (body) => {
 
   password = await bcrypt.hash(password, 10);
 
-  const result = await user.register({ name, password, email, role_id });
+  const result = user.register({ name, password, email, role_id });
 
   return result;
 }
@@ -25,7 +25,7 @@ const register = async (body) => {
 // Logs user in
 const login = async (body) => {
 
-  const existingUser = await user.getByEmail(body.email);
+  const [existingUser] = await user.getByEmail(body.email);
 
   if (!existingUser) {
     throw ApiError.notFound("User is not found");
@@ -62,9 +62,17 @@ const login = async (body) => {
 }
 
 // Gets all users
-const getAll = (page) => {
-
+const getAll = async (page) => {
+  
   const result = user.getAll(page);
+
+  return result;
+}
+
+// Deletes a user
+const remove = async (id) => {
+  
+  const result = user.remove(id);
 
   return result;
 }
@@ -73,5 +81,6 @@ const getAll = (page) => {
 module.exports = {
   register,
   login,
-  getAll
+  getAll,
+  remove
 }
