@@ -26,6 +26,23 @@ const getByEmail = async (email) => {
   return result;
 }
 
+const getById = async (id) => {
+
+  const result = db("user")
+    .leftJoin("role", "role.id", "user.role_id")
+    .select(
+      "user.id as id",
+      "user.name as name",
+      "password",
+      "email",
+      "role.name as role",
+      "role.id as role_id"
+    )
+    .where({ "user.id": id });
+
+  return result;
+}
+
 const getAll = async (page) => {
 
   let result = db("user")
@@ -48,8 +65,22 @@ const getAll = async (page) => {
 const remove = async (id) => {
 
   const result = db("user")
-    .where("id", id)
+    .where({ id })
     .del()
+    .returning(["id"]);
+
+  return result;
+}
+
+const update = async (user) => {
+  
+  const result = db("user")
+    .where("id", user.id)
+    .update({
+      name: user.name,
+      email: user.email,
+      role_id: user.role_id,
+    })
     .returning(["id"]);
 
   return result;
@@ -59,6 +90,8 @@ const remove = async (id) => {
 module.exports = {
   register,
   getByEmail,
+  getById,
   getAll,
-  remove
+  remove,
+  update
 }
