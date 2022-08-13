@@ -46,10 +46,22 @@ const remove = async (req, resp, next) => {
   }
 }
 
+// Updates a user
+const update = async (req, resp, next) => {
+  try {
+    const [result] = await user.update(req);
+
+    resp.status(200).json({ data: result });
+  } catch (err) {
+    next(err);
+  }
+}
+
 
 module.exports = {
   register,
   login,
   getAll,
-  remove
+  remove,
+  update
 }

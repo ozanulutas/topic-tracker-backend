@@ -14,7 +14,7 @@ const register = async (body) => {
   if (existingUser) {
     throw ApiError.conflict("User is already exists");
   }
-
+  
   password = await bcrypt.hash(password, 10);
 
   const result = user.register({ name, password, email, role_id });
@@ -33,7 +33,7 @@ const login = async (body) => {
 
   const isMatch = await bcrypt.compare(body.password, existingUser.password);
 
-  if(!isMatch) {
+  if (!isMatch) {
     throw ApiError.unauthorized("Wrong password");
   }
 
@@ -41,7 +41,7 @@ const login = async (body) => {
     user: {
       id: existingUser.id,
       name: existingUser.name,
-      role: existingUser.role,
+      role: existingUser.role_id,
     }
   }
 
@@ -55,7 +55,7 @@ const login = async (body) => {
       id: existingUser.id,
       name: existingUser.name,
       email: existingUser.email,
-      role: existingUser.role,
+      role_id: existingUser.role_id,
     },
     token
   };
@@ -63,7 +63,7 @@ const login = async (body) => {
 
 // Gets all users
 const getAll = async (page) => {
-  
+
   const result = user.getAll(page);
 
   return result;
@@ -71,8 +71,29 @@ const getAll = async (page) => {
 
 // Deletes a user
 const remove = async (id) => {
-  
+
   const result = user.remove(id);
+
+  return result;
+}
+
+// Updates a user
+const update = async (req) => {
+  const { id } = req.params;
+  const { email, name, role_id } = req.body;
+
+  const [requestingUser] = await user.getById(id);
+
+  // If user tries to change email, controls the other user's email
+  if(requestingUser.email !== email) {
+    const [existingUser] = await user.getByEmail(email);
+
+    if (existingUser) {
+      throw ApiError.conflict("Email is already in use");
+    }
+  }
+
+  const result = user.update({ id, email, name, role_id });
 
   return result;
 }
@@ -82,5 +103,6 @@ module.exports = {
   register,
   login,
   getAll,
-  remove
+  remove,
+  update
 }

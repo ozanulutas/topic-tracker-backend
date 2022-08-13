@@ -8,7 +8,7 @@ exports.up = function(knex) {
     table.specificType("order", "smallint");
     table.string("icon");
     table.timestamps(true, true);
-    table.integer("status_id").notNullable().references("id").inTable("status").onUpdate('CASCADE').onDelete('CASCADE');
+    table.integer("status_id").notNullable().references("id").inTable("status").onUpdate('CASCADE').onDelete('SET_NULL');
     table.integer("user_id").notNullable().references("id").inTable("user").onUpdate('CASCADE').onDelete('CASCADE');
   })
 };

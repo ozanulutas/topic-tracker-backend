@@ -11,3 +11,8 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   return knex.schema.dropTable("role_permission");
 };
+
+// TODO: Change permission engine
+// tbl
+// perm_tbl(perm_id, tbl_id)
+// role(perm_tbl_id)
